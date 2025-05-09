@@ -4,22 +4,19 @@ namespace Source.Scripts.PlayerScripts
 {
     public class PlayerAnimator : MonoBehaviour
     {
-        private const string WalkClipName = "Walk";
-        private const string IdleClipName = "Idle";
-        
-        private readonly int _walkClipHash = Animator.StringToHash(WalkClipName);
-        private readonly int _idleClipHash = Animator.StringToHash(IdleClipName);
+        private readonly int _speed = Animator.StringToHash("speed");
+        private readonly int _attackTrigger = Animator.StringToHash("AttackTrigger");
         
         [SerializeField] private Animator _animator;
 
-        public void PlayWalkClip()
+        public void PlayAttackClip()
         {
-            _animator.Play(_walkClipHash);
+            _animator.SetTrigger(_attackTrigger);
         }
 
-        public void PlayIdleClip()
+        public void SetWalkSpeed(float inputServiceDirection)
         {
-            _animator.Play(_idleClipHash);
+            _animator.SetFloat(_speed, inputServiceDirection);    
         }
     }
 }

@@ -12,26 +12,35 @@ namespace Source.Scripts.PlayerScripts
 
         public void Jump(Rigidbody2D rb)
         {
+            if (rb == null)
+                return;
+
             rb.AddForce(Vector2.up * _jumpForce, ForceMode2D.Impulse);
         }
 
-        public void Move(Rigidbody2D rb, float direction)
+        public void Move(Transform objectTransform, float direction)
         {
-            ChangeFacing(rb, direction);
-        
+            if (objectTransform == null)
+                return;
+
+            ChangeFacing(objectTransform, direction);
+
             if (_isFacingRight)
-                rb.transform.Translate(Vector3.right * (_speed * Time.deltaTime * direction));
+                objectTransform.transform.Translate(Vector3.right * (_speed * Time.deltaTime * direction));
             else
-                rb.transform.Translate(Vector3.left * (_speed * Time.deltaTime * direction));
+                objectTransform.transform.Translate(Vector3.left * (_speed * Time.deltaTime * direction));
         }
-        
-        private void ChangeFacing(Rigidbody2D rb, float direction)
+
+        private void ChangeFacing(Transform objectTransform, float direction)
         {
+            if (objectTransform == null)
+                return;
+            
             if (direction < 0f && _isFacingRight ||
                 direction > 0f && _isFacingRight == false)
             {
-                rb.transform.FlipByAxisY();
-        
+                objectTransform.transform.FlipByAxisY();
+
                 _isFacingRight = !_isFacingRight;
             }
         }

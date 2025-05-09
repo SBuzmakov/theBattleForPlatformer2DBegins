@@ -6,11 +6,15 @@ namespace Source.Scripts.PlayerScripts
 {
     public class Collector : MonoBehaviour
     {
+        public event Action<HealLoot> PickedUpHealLoot;
+        
         private void OnTriggerEnter2D(Collider2D other)
         {
-            if (other.TryGetComponent(out Loot loot))
+            if (other.TryGetComponent(out HealLoot healLoot))
             {
-                loot.OnPickUp();
+                PickedUpHealLoot?.Invoke(healLoot);
+                
+                healLoot.OnPickUp();
             }
         }
     }

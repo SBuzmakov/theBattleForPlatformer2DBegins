@@ -56,6 +56,7 @@ GameObject:
   - component: {fileID: 5005904064417338281}
   - component: {fileID: 4152768111150970985}
   - component: {fileID: 4414019496202118763}
+  - component: {fileID: 3562454130338623080}
   m_Layer: 0
   m_Name: Model
   m_TagString: Untagged
@@ -155,6 +156,21 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &3562454130338623080
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2014732306402607839}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9847d6e435d65f24b93244516f25b5f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _punchRadius: 0.2
+  _maxPunchedColliders: 10
+  _punchDamage: 100
 --- !u!1 &2567085490014043336
 GameObject:
   m_ObjectHideFlags: 0
@@ -257,6 +273,7 @@ GameObject:
   - component: {fileID: 4883685791554728402}
   - component: {fileID: 6953181125073585173}
   - component: {fileID: 2819649532015820019}
+  - component: {fileID: 7217730776103348736}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -282,6 +299,7 @@ Transform:
   - {fileID: 5913762508476255217}
   - {fileID: 1859675537173437992}
   - {fileID: 5005904064417338281}
+  - {fileID: 2372694791928430999}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6953181125073585173
@@ -296,11 +314,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe6a03f5d4361a1469c8de122e165260, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _rigidbody: {fileID: 2819649532015820019}
   _collector: {fileID: 7253336138672832676}
   _playerMover: {fileID: 7121840851777865431}
   _footGroundDetector: {fileID: 5123485937236592645}
   _inputService: {fileID: 0}
   _playerAnimator: {fileID: 326495753063650211}
+  _playerAttack: {fileID: 3562454130338623080}
+  _maxHealth: 100
+  _punchPoint: {fileID: 2372694791928430999}
 --- !u!50 &2819649532015820019
 Rigidbody2D:
   serializedVersion: 5
@@ -328,6 +350,52 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
+--- !u!61 &7217730776103348736
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3122143949089857071}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0.01, y: -0.01}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Size: {x: 0.19, y: 0.42}
+  m_EdgeRadius: 0
 --- !u!1 &3365435150762232805
 GameObject:
   m_ObjectHideFlags: 0
@@ -372,12 +440,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61c808142e8b69f46bf4311d9a65e8cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _rigidbody: {fileID: 0}
-  _inputService: {fileID: 0}
-  _footGroundDetector: {fileID: 5123485937236592645}
   _speed: 1
   _jumpForce: 5
-  _playerAnimator: {fileID: 326495753063650211}
 --- !u!1 &4677525889923354282
 GameObject:
   m_ObjectHideFlags: 0
@@ -469,3 +533,34 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 0.19, y: 0.42}
   m_EdgeRadius: 0
+--- !u!1 &5065732605648426209
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2372694791928430999}
+  m_Layer: 0
+  m_Name: PunchPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2372694791928430999
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5065732605648426209}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.15, y: 0.047, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4883685791554728402}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

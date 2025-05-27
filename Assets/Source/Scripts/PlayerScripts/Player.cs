@@ -1,8 +1,9 @@
-using System;
 using System.Collections.Generic;
+using Source.Scripts.AttributesScripts;
 using Source.Scripts.EnemyScripts;
-using Source.Scripts.HealthScripts;
 using Source.Scripts.LootScripts;
+using Source.Scripts.Services;
+using Source.Scripts.UIScripts;
 using UnityEngine;
 
 namespace Source.Scripts.PlayerScripts
@@ -17,13 +18,19 @@ namespace Source.Scripts.PlayerScripts
         [SerializeField] private PlayerAnimator _playerAnimator;
         [SerializeField] private PlayerAttack _playerAttack;
         [SerializeField] private float _maxHealth;
+        [SerializeField] private HealthBarSmoothViewer _healthBarSmoothViewer;
+        [SerializeField] private Health _health;
         [SerializeField] private Transform _punchPoint;
-
-        private Health _health;
+        
+        private HealthViewPresenter _healthViewPresenter;
+        private List<IHealthViewable> _healthViewers;
 
         private void Awake()
         {
-            _health = new Health(_maxHealth);
+            _health.Initialize(_maxHealth);
+            _healthViewers = new List<IHealthViewable> {_healthBarSmoothViewer};
+            _healthViewPresenter = new HealthViewPresenter(_health, _healthViewers);
+            _healthViewPresenter.Initialize();
         }
 
         private void OnEnable()
@@ -52,7 +59,12 @@ namespace Source.Scripts.PlayerScripts
             _playerAttack.Punched += GiveDamage;
             _collector.PickedUpHealLoot += UseHealLoot;
         }
-
+        
+        private void OnDestroy()
+        {
+            _healthViewPresenter.Dispose();
+        }
+        
         public void TakeDamage(float damage)
         {
             if (damage < 0f)

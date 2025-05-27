@@ -7,6 +7,7 @@ namespace Source.Scripts.PlayerScripts
     {
         [SerializeField] private float _speed;
         [SerializeField] private float _jumpForce;
+        [SerializeField] private Transform _modelTransform;
 
         private bool _isFacingRight = true;
 
@@ -25,21 +26,18 @@ namespace Source.Scripts.PlayerScripts
 
             ChangeFacing(objectTransform, direction);
 
-            if (_isFacingRight)
-                objectTransform.transform.Translate(Vector3.right * (_speed * Time.deltaTime * direction));
-            else
-                objectTransform.transform.Translate(Vector3.left * (_speed * Time.deltaTime * direction));
+            objectTransform.transform.Translate(Vector3.right * (_speed * Time.deltaTime * direction));
         }
 
         private void ChangeFacing(Transform objectTransform, float direction)
         {
             if (objectTransform == null)
                 return;
-            
+
             if (direction < 0f && _isFacingRight ||
                 direction > 0f && _isFacingRight == false)
             {
-                objectTransform.transform.FlipByAxisY();
+                _modelTransform.FlipByAxisY();
 
                 _isFacingRight = !_isFacingRight;
             }

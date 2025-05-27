@@ -176,6 +176,9 @@ MonoBehaviour:
   _damage: 10
   _detectorRange: 10
   _targetTransform: {fileID: 0}
+  _health: {fileID: 0}
+  _healthBarSmoothViewer: {fileID: 0}
+  _modelTransform: {fileID: 0}
 --- !u!1 &8902641796854257743
 GameObject:
   m_ObjectHideFlags: 0

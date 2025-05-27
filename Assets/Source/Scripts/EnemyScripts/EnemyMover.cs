@@ -10,6 +10,7 @@ namespace Source.Scripts.EnemyScripts
 
         [SerializeField] float _speed = 1.0f;
         [SerializeField] private List<Transform> _waypoints;
+        [SerializeField] private Transform _modelTransform;
 
         private int _currentWaypoint;
         private bool _isFacingRight;
@@ -56,7 +57,7 @@ namespace Source.Scripts.EnemyScripts
             if (objectTransform.position.x < _previousPositionX && _isFacingRight ||
                 objectTransform.position.x > _previousPositionX && _isFacingRight == false)
             {
-                objectTransform.FlipByAxisY();
+                _modelTransform.FlipByAxisY();
 
                 _isFacingRight = !_isFacingRight;
             }

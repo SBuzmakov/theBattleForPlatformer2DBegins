@@ -1,5 +1,8 @@
-using Source.Scripts.HealthScripts;
+using System.Collections.Generic;
+using Source.Scripts.AttributesScripts;
 using Source.Scripts.PlayerScripts;
+using Source.Scripts.Services;
+using Source.Scripts.UIScripts;
 using UnityEngine;
 
 namespace Source.Scripts.EnemyScripts
@@ -11,14 +14,20 @@ namespace Source.Scripts.EnemyScripts
         [SerializeField] private float _damage;
         [SerializeField] private float _detectorRange;
         [SerializeField] private Transform _targetTransform;
-
-        private Health _health;
+        [SerializeField] private Health _health;
+        [SerializeField] private HealthBarSmoothViewer _healthBarSmoothViewer;
+        
+        private List<IHealthViewable> _healthViewers;
+        private HealthViewPresenter _healthViewPresenter;
         private EnemyAttack _enemyAttack;
         private TargetDetector _targetDetector;
 
         private void Awake()
         {
-            _health = new Health(_maxHealth);
+            _health.Initialize(_maxHealth);
+            _healthViewers = new List<IHealthViewable>() {_healthBarSmoothViewer};
+            _healthViewPresenter = new HealthViewPresenter(_health, _healthViewers);
+            _healthViewPresenter.Initialize();
             _enemyAttack = new EnemyAttack(_damage);
             _targetDetector = new TargetDetector(transform, _targetTransform, _detectorRange);
         }

@@ -49,10 +49,15 @@ namespace Source.Scripts.EnemyScripts
                 _enemyMover.MoveToTarget(transform, _targetTransform);
             }
 
-            if (_health.CurrentHealth <= 0)
+            if (_health.CurrentValue <= 0)
                 Destroy(gameObject);
         }
 
+        private void OnDestroy()
+        {
+            _healthViewPresenter.Dispose();
+        }
+        
         public void TakeDamage(float damage)
         {
             if (damage < 0f)

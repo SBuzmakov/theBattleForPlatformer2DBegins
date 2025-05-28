@@ -43,7 +43,7 @@ namespace Source.Scripts.PlayerScripts
 
         private void Update()
         {
-            if (_health.CurrentHealth <= 0)
+            if (_health.CurrentValue <= 0)
                 Destroy(gameObject);
         }
 
@@ -71,7 +71,7 @@ namespace Source.Scripts.PlayerScripts
                 return;
 
             _health.TakeDamage(damage);
-            Debug.Log($"takeDamage: {damage}, health: {_health.CurrentHealth}/{_health.MaxHealth}");
+            Debug.Log($"takeDamage: {damage}, health: {_health.CurrentValue}/{_health.MaxValue}");
         }
 
         private void UseHealLoot(HealLoot healLoot)
@@ -81,7 +81,7 @@ namespace Source.Scripts.PlayerScripts
 
             _health.Heal(healLoot.HealthIncreaseValue);
             Debug.Log(
-                $"Health increased: +{healLoot.HealthIncreaseValue}. health: {_health.CurrentHealth}/{_health.MaxHealth}");
+                $"Health increased: +{healLoot.HealthIncreaseValue}. health: {_health.CurrentValue}/{_health.MaxValue}");
         }
 
         private void Jump()

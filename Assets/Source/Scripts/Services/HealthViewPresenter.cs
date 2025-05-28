@@ -17,20 +17,20 @@ namespace Source.Scripts.Services
 
         public void Initialize()
         {
-            SetHealthView();
+            SetView();
 
-            _health.HealthChanged += SetHealthView;
+            _health.CurrentValueChanged += SetView;
         }
 
         public void Dispose()
         {
-            _health.HealthChanged -= SetHealthView;
+            _health.CurrentValueChanged -= SetView;
         }
 
-        private void SetHealthView()
+        private void SetView()
         {
             foreach (IHealthViewable healthViewer in _healthViewers)
-                healthViewer.SetHealthView(_health.CurrentHealth, _health.MaxHealth);
+                healthViewer.SetHealthView(_health.CurrentValue, _health.MaxValue);
         }
     }
 }

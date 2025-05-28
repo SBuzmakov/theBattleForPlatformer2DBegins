@@ -5,28 +5,23 @@ namespace Source.Scripts.AttributesScripts
 {
     public class Health : MonoBehaviour
     {
-        public float MaxHealth { get; private set; }
-        public float CurrentHealth { get; private set; }
+        public float MaxValue { get; private set; }
+        public float CurrentValue { get; private set; }
 
-        public event Action HealthChanged;
+        public event Action CurrentValueChanged;
         
         public void Initialize(float maxHealth)
         {
-            MaxHealth = maxHealth;
-            CurrentHealth = maxHealth;
+            MaxValue = maxHealth;
+            CurrentValue = maxHealth;
         }
 
         public void TakeDamage(float damage)
         {
             if (damage < 0f)
                 return;
-            
-            if (CurrentHealth - damage < 0f)
-                CurrentHealth = 0f;
-            else
-                CurrentHealth -= damage;
-            
-            HealthChanged?.Invoke();
+
+            ChangeCurrentValue(-damage);
         }
 
         public void Heal(float healValue)
@@ -34,12 +29,17 @@ namespace Source.Scripts.AttributesScripts
             if (healValue < 0f)
                 return;
 
-            if (CurrentHealth + healValue > MaxHealth)
-                CurrentHealth = MaxHealth;
-            else
-                CurrentHealth += healValue;
+            ChangeCurrentValue(healValue);
+        }
+        
+        private void ChangeCurrentValue(float delta)
+        {
+            if (Mathf.Approximately(delta, 0f))
+                return;
+
+            CurrentValue = Mathf.Clamp(CurrentValue + delta, 0f, MaxValue);
             
-            HealthChanged?.Invoke();
+            CurrentValueChanged?.Invoke();
         }
     }
 }

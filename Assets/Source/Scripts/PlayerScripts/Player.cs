@@ -56,8 +56,8 @@ namespace Source.Scripts.PlayerScripts
         {
             _inputService.PressedJumpKey -= Jump;
             _inputService.PressedAttackKey -= Attack;
-            _playerAttack.Punched += GiveDamage;
-            _collector.PickedUpHealLoot += UseHealLoot;
+            _playerAttack.Punched -= GiveDamage;
+            _collector.PickedUpHealLoot -= UseHealLoot;
         }
         
         private void OnDestroy()

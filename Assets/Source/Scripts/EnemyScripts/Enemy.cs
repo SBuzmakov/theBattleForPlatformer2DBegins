@@ -22,6 +22,8 @@ namespace Source.Scripts.EnemyScripts
         private EnemyAttack _enemyAttack;
         private TargetDetector _targetDetector;
 
+        public Vector3 Position => transform.position;
+        
         private void Awake()
         {
             _health.Initialize(_maxHealth);
@@ -40,12 +42,11 @@ namespace Source.Scripts.EnemyScripts
 
         private void Update()
         {
-            if (_enemyAttack.IsAttacking == false || _targetTransform == null)
+            if (_targetDetector.IsCloseToAttack() == false || _targetTransform == null)
                 _enemyMover.MoveBetweenWaypoints(transform);
 
             if (_targetTransform && _targetDetector.IsCloseToAttack())
             {
-                _enemyAttack.SwitchOnAttacking();
                 _enemyMover.MoveToTarget(transform, _targetTransform);
             }
 

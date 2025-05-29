@@ -8,9 +8,11 @@ namespace Source.Scripts.PlayerScripts
         private const string AxisHorizontalName = "Horizontal";
         private const KeyCode JumpKey = KeyCode.Space;
         private const KeyCode AttackKey = KeyCode.Mouse1;
+        private const KeyCode VampyreSkillKey = KeyCode.F;
 
         public event Action PressedJumpKey;
         public event Action PressedAttackKey;
+        public event Action PressedVampyreSkillKey;
 
         public float Direction { get; private set; }
 
@@ -21,6 +23,8 @@ namespace Source.Scripts.PlayerScripts
             UpdateJumpInput();
             
             UpdateAttackInput();
+            
+            UpdateVampyreSkillInput();
         }
 
         private void UpdateJumpInput()
@@ -33,6 +37,14 @@ namespace Source.Scripts.PlayerScripts
         {
             if (Input.GetKeyDown(AttackKey))
                 PressedAttackKey?.Invoke();
+        }
+
+        private void UpdateVampyreSkillInput()
+        {
+            if (Input.GetKeyDown(VampyreSkillKey))
+            {
+                PressedVampyreSkillKey?.Invoke();
+            }
         }
     }
 }

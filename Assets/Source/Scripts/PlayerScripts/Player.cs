@@ -21,14 +21,14 @@ namespace Source.Scripts.PlayerScripts
         [SerializeField] private HealthBarSmoothViewer _healthBarSmoothViewer;
         [SerializeField] private Health _health;
         [SerializeField] private Transform _punchPoint;
-        
+
         private HealthViewPresenter _healthViewPresenter;
         private List<IHealthViewable> _healthViewers;
 
         private void Awake()
         {
             _health.Initialize(_maxHealth);
-            _healthViewers = new List<IHealthViewable> {_healthBarSmoothViewer};
+            _healthViewers = new List<IHealthViewable> { _healthBarSmoothViewer };
             _healthViewPresenter = new HealthViewPresenter(_health, _healthViewers);
             _healthViewPresenter.Initialize();
         }
@@ -36,8 +36,9 @@ namespace Source.Scripts.PlayerScripts
         private void OnEnable()
         {
             _inputService.PressedAttackKey += Attack;
+            _inputService.PressedVampyreSkillKey += ActivateVampyreSkill;
             _inputService.PressedJumpKey += Jump;
-            _playerAttack.Punched += GiveDamage;
+            _playerAttack.Punched += GivePunchDamage;
             _collector.PickedUpHealLoot += UseHealLoot;
         }
 
@@ -56,15 +57,16 @@ namespace Source.Scripts.PlayerScripts
         {
             _inputService.PressedJumpKey -= Jump;
             _inputService.PressedAttackKey -= Attack;
-            _playerAttack.Punched += GiveDamage;
-            _collector.PickedUpHealLoot += UseHealLoot;
+            _inputService.PressedVampyreSkillKey -= ActivateVampyreSkill;
+            _playerAttack.Punched -= GivePunchDamage;
+            _collector.PickedUpHealLoot -= UseHealLoot;
         }
-        
+
         private void OnDestroy()
         {
             _healthViewPresenter.Dispose();
         }
-        
+
         public void TakeDamage(float damage)
         {
             if (damage < 0f)
@@ -102,14 +104,17 @@ namespace Source.Scripts.PlayerScripts
             _playerAnimator.PlayAttackClip();
         }
 
-        private void GiveDamage()
+        private void ActivateVampyreSkill()
         {
-            List<Enemy> punchedEnemies = _playerAttack.GetPunchedEnemies(_punchPoint.position);
+            _playerAttack.StartVampyrism();
+        }
 
-            foreach (Enemy enemy in punchedEnemies)
-            {
-                enemy.TakeDamage(_playerAttack.PunchDamage);
-            }
+        private void GivePunchDamage()
+        {
+            Enemy punchedEnemy = _playerAttack.GetClosestAttackedEnemy(_punchPoint.position, _playerAttack.PunchRadius);
+
+            if (punchedEnemy)
+                punchedEnemy.TakeDamage(_playerAttack.PunchDamage);
         }
     }
 }

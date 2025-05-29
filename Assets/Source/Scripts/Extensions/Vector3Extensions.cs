@@ -9,7 +9,7 @@ namespace Source.Scripts.Extensions
             return start.SqrDistance(end) <= distance * distance;
         }
 
-        private static float SqrDistance(this Vector3 start, Vector3 end)
+        public static float SqrDistance(this Vector3 start, Vector3 end)
         {
             return (end - start).sqrMagnitude;
         }

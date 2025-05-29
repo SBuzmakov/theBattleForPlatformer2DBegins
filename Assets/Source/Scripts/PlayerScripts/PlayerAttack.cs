@@ -67,27 +67,30 @@ namespace Source.Scripts.PlayerScripts
         {
             _vampyrismSprite.gameObject.SetActive(true);
             
+            float vampyrismDecreaseFillAmount = 1 / VampyrismDurationTime;
+            float vampyrismCooldownFill = 1 / VampyrismCooldownTime;
+            
             for (int i = 0; i < VampyrismDurationTime; i++)
             {
-                _vampyrismIndicator.fillAmount -= 1 / VampyrismDurationTime;
-                
+                _vampyrismIndicator.fillAmount -= vampyrismDecreaseFillAmount;
+
                 Enemy enemy = GetClosestAttackedEnemy(_vampyrismSprite.transform.position, _vampyreSkillRadius);
-                
+
                 if (enemy)
                     enemy.TakeDamage(_vampyrismDamage);
 
                 yield return _wait;
             }
-            
+
             _vampyrismSprite.gameObject.SetActive(false);
-            
+
             for (int i = 0; i < VampyrismCooldownTime; i++)
             {
-                _vampyrismIndicator.fillAmount += 1 / VampyrismCooldownTime;
+                _vampyrismIndicator.fillAmount += vampyrismCooldownFill;
 
                 yield return _wait;
             }
-            
+
             _coroutine = null;
         }
     }

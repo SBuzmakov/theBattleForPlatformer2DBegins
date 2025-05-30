@@ -9,6 +9,7 @@ namespace Source.Scripts.AttributesScripts
         public float CurrentValue { get; private set; }
 
         public event Action CurrentValueChanged;
+        public event Action CurrentValueIsOver;
         
         public void Initialize(float maxHealth)
         {
@@ -40,6 +41,9 @@ namespace Source.Scripts.AttributesScripts
             CurrentValue = Mathf.Clamp(CurrentValue + delta, 0f, MaxValue);
             
             CurrentValueChanged?.Invoke();
+            
+            if (CurrentValue <= 0)
+                CurrentValueIsOver?.Invoke();
         }
     }
 }

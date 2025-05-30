@@ -16,15 +16,18 @@ namespace Source.Scripts.PlayerScripts
         [SerializeField] private FootGroundDetector _footGroundDetector;
         [SerializeField] private InputService _inputService;
         [SerializeField] private PlayerAnimator _playerAnimator;
-        [SerializeField] private PlayerAttack _playerAttack;
         [SerializeField] private float _maxHealth;
-        [SerializeField] private HealthBarSmoothViewer _healthBarSmoothViewer;
         [SerializeField] private Health _health;
+        [SerializeField] private PlayerAttack _playerAttack;
         [SerializeField] private Transform _punchPoint;
-
+        [SerializeField] private HealthBarSmoothViewer _healthBarSmoothViewer;
+        [SerializeField] private VampyreBarViewer _vampyreBarViewer;
+        
         private HealthViewPresenter _healthViewPresenter;
         private List<IHealthViewable> _healthViewers;
 
+        public Transform Position => transform;
+        
         private void Awake()
         {
             _health.Initialize(_maxHealth);
@@ -40,6 +43,7 @@ namespace Source.Scripts.PlayerScripts
             _inputService.PressedJumpKey += Jump;
             _playerAttack.Punched += GivePunchDamage;
             _collector.PickedUpHealLoot += UseHealLoot;
+            _health.CurrentValueIsOver += Destroy;
         }
 
         private void Update()
@@ -60,6 +64,7 @@ namespace Source.Scripts.PlayerScripts
             _inputService.PressedVampyreSkillKey -= ActivateVampyreSkill;
             _playerAttack.Punched -= GivePunchDamage;
             _collector.PickedUpHealLoot -= UseHealLoot;
+            _health.CurrentValueIsOver -= Destroy;
         }
 
         private void OnDestroy()
@@ -76,6 +81,11 @@ namespace Source.Scripts.PlayerScripts
             Debug.Log($"takeDamage: {damage}, health: {_health.CurrentValue}/{_health.MaxValue}");
         }
 
+        private void Destroy()
+        {
+            Destroy(gameObject);
+        }
+        
         private void UseHealLoot(HealLoot healLoot)
         {
             if (healLoot == null)
@@ -106,7 +116,7 @@ namespace Source.Scripts.PlayerScripts
 
         private void ActivateVampyreSkill()
         {
-            _playerAttack.StartVampyrism();
+            _playerAttack.StartVampyrism(_vampyreBarViewer, _health);
         }
 
         private void GivePunchDamage()

@@ -1,27 +1,27 @@
-using Source.Scripts.Extensions;
+using Source.Scripts.PlayerScripts;
 using UnityEngine;
 
 namespace Source.Scripts.EnemyScripts
 {
-    public class TargetDetector
+    public class TargetDetector : MonoBehaviour
     {
-        private readonly Transform _transform;
-        private readonly float _range;
-        private readonly Transform _targetTransform;
-
-        public TargetDetector(Transform transform, Transform targetTransform, float range)
+        public Transform TargetTransform { get; private set; }
+        
+        private void OnTriggerEnter2D(Collider2D collision)
         {
-            if (transform == null || targetTransform == null)
-                return;
-
-            _transform = transform;
-            _range = range;
-            _targetTransform = targetTransform;
+            if (collision.gameObject.TryGetComponent(out Player player))
+                SetTargetPosition(player.Position);
         }
 
-        public bool IsCloseToAttack()
+        private void OnTriggerExit2D(Collider2D collision)
         {
-            return _transform.position.IsEnoughClose(_targetTransform.position, _range);
+            if (collision.gameObject.TryGetComponent(out Player _))
+                SetTargetPosition(null);
+        }
+
+        private void SetTargetPosition(Transform targetTransform)
+        {
+            TargetTransform = targetTransform;
         }
     }
 }

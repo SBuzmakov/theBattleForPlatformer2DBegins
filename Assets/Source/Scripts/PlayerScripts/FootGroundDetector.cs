@@ -7,12 +7,7 @@ namespace Source.Scripts.PlayerScripts
     {
         private int _groundCollisionsEntered;
 
-        public bool IsGrounded { get; private set; }
-
-        private void Update()
-        {
-            IsGrounded = _groundCollisionsEntered > 0;
-        }
+        public bool IsGrounded => _groundCollisionsEntered > 0 ;
 
         private void OnCollisionEnter2D(Collision2D collision)
         {

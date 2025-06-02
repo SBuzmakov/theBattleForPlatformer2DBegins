@@ -9,7 +9,7 @@ namespace Source.Scripts.PlayerScripts
         
         [SerializeField] private Animator _animator;
 
-        public void PlayAttackClip()
+        public void PlayPunchClip()
         {
             _animator.SetTrigger(_attackTrigger);
         }

@@ -205,8 +205,6 @@ MonoBehaviour:
   _vampyreSkillRadius: 1
   _punchDamage: 30
   _vampyrismDamage: 10
-  _vampyrismSprite: {fileID: 6337296886180542223}
-  _vampyrismIndicator: {fileID: 4524748218960419143}
 --- !u!1 &2567085490014043336
 GameObject:
   m_ObjectHideFlags: 0
@@ -359,11 +357,11 @@ MonoBehaviour:
   _footGroundDetector: {fileID: 5123485937236592645}
   _inputService: {fileID: 0}
   _playerAnimator: {fileID: 326495753063650211}
-  _playerAttack: {fileID: 3562454130338623080}
   _maxHealth: 100
-  _healthBarSmoothViewer: {fileID: 72743877679893396}
   _health: {fileID: 3870239943234002115}
+  _vampyrismAttack: {fileID: 3562454130338623080}
   _punchPoint: {fileID: 2372694791928430999}
+  _healthBarSmoothViewer: {fileID: 72743877679893396}
 --- !u!50 &2819649532015820019
 Rigidbody2D:
   serializedVersion: 5
@@ -878,22 +876,19 @@ PrefabInstance:
       propertyPath: m_Name
       value: VampyrismBar
       objectReference: {fileID: 0}
+    - target: {fileID: 3174686592290171063, guid: 6dd3b413e0d0c3e4fbde381d86b18abf, type: 3}
+      propertyPath: _vampyrismAttack
+      value: 
+      objectReference: {fileID: 3562454130338623080}
+    - target: {fileID: 3174686592290171063, guid: 6dd3b413e0d0c3e4fbde381d86b18abf, type: 3}
+      propertyPath: _vampyrismAreaSprite
+      value: 
+      objectReference: {fileID: 6337296886180542223}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6dd3b413e0d0c3e4fbde381d86b18abf, type: 3}
---- !u!114 &4524748218960419143 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4910281568132057494, guid: 6dd3b413e0d0c3e4fbde381d86b18abf, type: 3}
-  m_PrefabInstance: {fileID: 8858564636704723153}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &8572936318911284150 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 871096552827900775, guid: 6dd3b413e0d0c3e4fbde381d86b18abf, type: 3}

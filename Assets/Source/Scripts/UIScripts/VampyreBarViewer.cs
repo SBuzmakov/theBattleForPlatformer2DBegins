@@ -1,3 +1,4 @@
+using Source.Scripts.PlayerScripts;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,25 +8,38 @@ namespace Source.Scripts.UIScripts
     {
         [SerializeField] private SpriteRenderer _vampyrismAreaSprite;
         [SerializeField] private Image _vampyrismIndicator;
-
-        public Transform AreaTransform => _vampyrismAreaSprite.transform;
+        [SerializeField] private VampyrismAttack _vampyrismAttack;
         
         private void Awake()
         {
             SetAreaDisable();
         }
 
-        public void SetAreaEnable()
+        public void OnEnable()
+        {
+            _vampyrismAttack.ChangedValue += ChangeIndicatorFill;
+            _vampyrismAttack.Enabled += SetAreaEnable;
+            _vampyrismAttack.Disabled += SetAreaDisable;
+        }
+
+        public void OnDisable()
+        {
+            _vampyrismAttack.ChangedValue -= ChangeIndicatorFill;
+            _vampyrismAttack.Enabled -= SetAreaEnable;
+            _vampyrismAttack.Disabled -= SetAreaDisable;
+        }
+        
+        private void SetAreaEnable()
         {
             _vampyrismAreaSprite.gameObject.SetActive(true);
         }
-        
-        public void SetAreaDisable()
+
+        private void SetAreaDisable()
         {
             _vampyrismAreaSprite.gameObject.SetActive(false);
         }
 
-        public void ChangeIndicatorFill(float deltaFillAmount)
+        private void ChangeIndicatorFill(float deltaFillAmount)
         {
             _vampyrismIndicator.fillAmount += deltaFillAmount;
         }

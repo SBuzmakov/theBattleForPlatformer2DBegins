@@ -5,11 +5,11 @@ namespace Source.Scripts.AttributesScripts
 {
     public class Health : MonoBehaviour
     {
-        public float MaxValue { get; private set; }
-        public float CurrentValue { get; private set; }
-
         public event Action CurrentValueChanged;
         public event Action CurrentValueIsOver;
+
+        public float MaxValue { get; private set; }
+        public float CurrentValue { get; private set; }
         
         public void Initialize(float maxHealth)
         {

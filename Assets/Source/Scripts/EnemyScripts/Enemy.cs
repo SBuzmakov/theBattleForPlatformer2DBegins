@@ -1,10 +1,8 @@
-using System;
 using System.Collections.Generic;
 using Source.Scripts.AttributesScripts;
 using Source.Scripts.PlayerScripts;
 using Source.Scripts.Services;
 using Source.Scripts.UIScripts;
-using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Source.Scripts.EnemyScripts

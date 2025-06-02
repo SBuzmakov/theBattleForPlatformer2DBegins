@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using Source.Scripts.AttributesScripts;
-using Source.Scripts.EnemyScripts;
 using Source.Scripts.LootScripts;
 using Source.Scripts.Services;
 using Source.Scripts.UIScripts;
@@ -18,16 +17,15 @@ namespace Source.Scripts.PlayerScripts
         [SerializeField] private PlayerAnimator _playerAnimator;
         [SerializeField] private float _maxHealth;
         [SerializeField] private Health _health;
-        [SerializeField] private PlayerAttack _playerAttack;
-        [SerializeField] private Transform _punchPoint;
+        [SerializeField] private VampyrismAttack _vampyrismAttack;
+        [SerializeField] private PunchAttack _punchAttack;
         [SerializeField] private HealthBarSmoothViewer _healthBarSmoothViewer;
-        [SerializeField] private VampyreBarViewer _vampyreBarViewer;
-        
+
         private HealthViewPresenter _healthViewPresenter;
         private List<IHealthViewable> _healthViewers;
 
         public Transform Position => transform;
-        
+
         private void Awake()
         {
             _health.Initialize(_maxHealth);
@@ -38,10 +36,10 @@ namespace Source.Scripts.PlayerScripts
 
         private void OnEnable()
         {
-            _inputService.PressedAttackKey += Attack;
+            _inputService.PressedAttackKey += PlayPunchAttack;
             _inputService.PressedVampyreSkillKey += ActivateVampyreSkill;
             _inputService.PressedJumpKey += Jump;
-            _playerAttack.Punched += GivePunchDamage;
+            _punchAttack.Punched += GivePunchDamage;
             _collector.PickedUpHealLoot += UseHealLoot;
             _health.CurrentValueIsOver += Destroy;
         }
@@ -54,15 +52,17 @@ namespace Source.Scripts.PlayerScripts
 
         private void FixedUpdate()
         {
-            Move();
+            _playerMover.Move(transform, _inputService.Direction);
+
+            _playerAnimator.SetWalkSpeed(_inputService.Direction);
         }
 
         private void OnDisable()
         {
             _inputService.PressedJumpKey -= Jump;
-            _inputService.PressedAttackKey -= Attack;
+            _inputService.PressedAttackKey -= PlayPunchAttack;
             _inputService.PressedVampyreSkillKey -= ActivateVampyreSkill;
-            _playerAttack.Punched -= GivePunchDamage;
+            _punchAttack.Punched -= GivePunchDamage;
             _collector.PickedUpHealLoot -= UseHealLoot;
             _health.CurrentValueIsOver -= Destroy;
         }
@@ -78,22 +78,19 @@ namespace Source.Scripts.PlayerScripts
                 return;
 
             _health.TakeDamage(damage);
-            Debug.Log($"takeDamage: {damage}, health: {_health.CurrentValue}/{_health.MaxValue}");
         }
 
         private void Destroy()
         {
             Destroy(gameObject);
         }
-        
+
         private void UseHealLoot(HealLoot healLoot)
         {
             if (healLoot == null)
                 return;
 
             _health.Heal(healLoot.HealthIncreaseValue);
-            Debug.Log(
-                $"Health increased: +{healLoot.HealthIncreaseValue}. health: {_health.CurrentValue}/{_health.MaxValue}");
         }
 
         private void Jump()
@@ -102,29 +99,19 @@ namespace Source.Scripts.PlayerScripts
                 _playerMover.Jump(_rigidbody);
         }
 
-        private void Move()
+        private void PlayPunchAttack()
         {
-            _playerMover.Move(transform, _inputService.Direction);
-
-            _playerAnimator.SetWalkSpeed(_inputService.Direction);
-        }
-
-        private void Attack()
-        {
-            _playerAnimator.PlayAttackClip();
+            _playerAnimator.PlayPunchClip();
         }
 
         private void ActivateVampyreSkill()
         {
-            _playerAttack.StartVampyrism(_vampyreBarViewer, _health);
+            _vampyrismAttack.Activate(_health);
         }
 
         private void GivePunchDamage()
         {
-            Enemy punchedEnemy = _playerAttack.GetClosestAttackedEnemy(_punchPoint.position, _playerAttack.PunchRadius);
-
-            if (punchedEnemy)
-                punchedEnemy.TakeDamage(_playerAttack.PunchDamage);
+            _punchAttack.Perform();
         }
     }
 }

@@ -21,7 +21,7 @@ namespace Source.Scripts.PlayerScripts
         public void Perform()
         {
             Enemy enemy = _scanAttackedEnemies.GetClosest(_punchPoint.position, _punchRadius);
-            enemy.TakeDamage(_punchDamage);
+            enemy?.TakeDamage(_punchDamage);
         }
     }
 }

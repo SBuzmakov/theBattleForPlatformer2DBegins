@@ -4,6 +4,7 @@ using Source.Scripts.LootScripts;
 using Source.Scripts.Services;
 using Source.Scripts.UIScripts;
 using UnityEngine;
+using Zenject;
 
 namespace Source.Scripts.PlayerScripts
 {
@@ -13,7 +14,6 @@ namespace Source.Scripts.PlayerScripts
         [SerializeField] private Collector _collector;
         [SerializeField] private PlayerMover _playerMover;
         [SerializeField] private FootGroundDetector _footGroundDetector;
-        [SerializeField] private InputService _inputService;
         [SerializeField] private PlayerAnimator _playerAnimator;
         [SerializeField] private float _maxHealth;
         [SerializeField] private Health _health;
@@ -21,11 +21,18 @@ namespace Source.Scripts.PlayerScripts
         [SerializeField] private PunchAttack _punchAttack;
         [SerializeField] private HealthBarSmoothViewer _healthBarSmoothViewer;
 
+        private InputService _inputService;
         private HealthViewPresenter _healthViewPresenter;
         private List<IHealthViewable> _healthViewers;
 
         public Transform Position => transform;
 
+        [Inject]
+        private void Construct(InputService inputService)
+        {
+            _inputService = inputService;
+        }
+        
         private void Awake()
         {
             _health.Initialize(_maxHealth);
